@@ -5,7 +5,7 @@ const BCrypt = require("bcrypt");
 const { User } = db;
 
 router.post("/", async (req, res) => {
-  console.log("IN Here");
+  console.log("I'M HERE");
 });
 
 module.exports = router;
