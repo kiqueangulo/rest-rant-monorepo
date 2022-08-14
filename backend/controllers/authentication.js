@@ -19,11 +19,24 @@ router.post("/", async (req, res) => {
           "Could not find a user with the provided username and password",
       });
     } else {
+      req.session.userId = user.userId;
       res.status(200).json({ user });
     }
   } catch (error) {
     console.log("Error:", error);
   }
+});
+
+router.get("/profile", async (req, res) => {
+  console.log(`User ID: ${req.session.userId}`);
+  // try {
+  //   const user = await User.findOne({
+  //     where: { userId: "" },
+  //   });
+  //   res.json(user);
+  // } catch {
+  //   res.json(null);
+  // }
 });
 
 module.exports = router;
