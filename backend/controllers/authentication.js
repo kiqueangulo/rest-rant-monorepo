@@ -5,7 +5,14 @@ const BCrypt = require("bcrypt");
 const { User } = db;
 
 router.post("/", async (req, res) => {
-  console.log("I'M HERE");
+  try {
+    const user = await User.findOne({
+      where: { email: req.body.email },
+    });
+    console.log(user);
+  } catch (error) {
+    console.log("Error:", error);
+  }
 });
 
 module.exports = router;
