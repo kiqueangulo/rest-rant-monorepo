@@ -19,7 +19,7 @@ router.post("/", async (req, res) => {
           "Could not find a user with the provided username and password",
       });
     } else {
-      res.json({ user });
+      res.status(200).json({ user });
     }
   } catch (error) {
     console.log("Error:", error);
