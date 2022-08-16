@@ -103,7 +103,7 @@ router.post("/:placeId/comments", async (req, res) => {
   if (!req.currentUser)
     return res
       .status(404)
-      .json({ message: "You must be logged in to leave a reant or rave." });
+      .json({ message: "You must be logged in to leave a rant or rave." });
 
   const comment = await Comment.create({
     ...req.body,
@@ -129,9 +129,14 @@ router.delete("/:placeId/comments/:commentId", async (req, res) => {
     const comment = await Comment.findOne({
       where: { commentId: commentId, placeId: placeId },
     });
+
     if (!comment) {
       res.status(404).json({
         message: `Could not find comment with id "${commentId}" for place with id "${placeId}"`,
+      });
+    } else if (comment.authorId !== req.currentUser?.userId) {
+      req.status(403).json({
+        message: `You do not have permission to delete comment ${comment.commentId}`,
       });
     } else {
       await comment.destroy();

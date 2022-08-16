@@ -1,5 +1,5 @@
-const jwt = require("json-web-token");
 const db = require("../models");
+const jwt = require("json-web-token");
 
 const { User } = db;
 
@@ -12,7 +12,7 @@ async function defineCurrentUser(req, res, next) {
       const { id } = result.value;
 
       let user = await User.findOne({
-        where: { userID: id },
+        where: { userId: id },
       });
 
       req.currentUser = user;

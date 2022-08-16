@@ -2,8 +2,6 @@ import { useContext } from "react";
 import { CurrentUser } from "../contexts/CurrentUser";
 
 function CommentCard({ comment, onDelete }) {
-  console.log(comment);
-
   const { currentUser } = useContext(CurrentUser);
 
   let deleteButton = null;
@@ -21,7 +19,7 @@ function CommentCard({ comment, onDelete }) {
       <h4>{comment.content}</h4>
       <h3>
         <strong>
-          {/* - {comment.author.firstName} {comment.author.lastName} */}
+          - {comment.author.firstName} {comment.author.lastName}
         </strong>
       </h3>
       <h4>Rating: {comment.stars}</h4>

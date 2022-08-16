@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useHistory, useParams } from "react-router";
+import { CurrentUser } from "../contexts/CurrentUser";
 import CommentCard from "./CommentCard";
 import NewCommentForm from "./NewCommentForm";
 
@@ -8,14 +9,18 @@ function PlaceDetails() {
 
   const history = useHistory();
 
+  const { currentUser } = useContext(CurrentUser);
+
   const [place, setPlace] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       const response = await fetch(`http://localhost:5000/places/${placeId}`);
       const resData = await response.json();
+
       setPlace(resData);
     };
+
     fetchData();
   }, [placeId]);
 
@@ -31,6 +36,7 @@ function PlaceDetails() {
     await fetch(`http://localhost:5000/places/${place.placeId}`, {
       method: "DELETE",
     });
+
     history.push("/places");
   }
 
@@ -56,8 +62,8 @@ function PlaceDetails() {
       {
         method: "POST",
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
           "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
         body: JSON.stringify(commentAttributes),
       }
@@ -73,16 +79,21 @@ function PlaceDetails() {
 
   let comments = <h3 className="inactive">No comments yet!</h3>;
   let rating = <h3 className="inactive">Not yet rated</h3>;
+
   if (place.comments.length) {
     let sumRatings = place.comments.reduce((tot, c) => {
       return tot + c.stars;
     }, 0);
+
     let averageRating = Math.round(sumRatings / place.comments.length);
     let stars = "";
+
     for (let i = 0; i < averageRating; i++) {
       stars += "⭐️";
     }
+
     rating = <h3>{stars} stars</h3>;
+
     comments = place.comments.map((comment) => {
       return (
         <CommentCard
